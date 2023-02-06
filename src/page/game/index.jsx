@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
+// json data
+import Dares from "./fakeDares.json";
 
 export default function Index() {
   //fetch the api and store the question and solution
@@ -9,12 +11,12 @@ export default function Index() {
   const [score, setScore] = useState(0);
   const [count, setCount] = useState(0);
   const [userName, setUserName] = useState("Your");
-//Onload fetch the data
-window.onload = function () {
-  getUserName();  
-  fetchData();
-}
- function fetchData(){
+  //Onload fetch the data
+  window.onload = function () {
+    getUserName();
+    fetchData();
+  };
+  function fetchData() {
     fetch("https://marcconrad.com/uob/smile/api.php?out=json")
       .then((response) => response.json())
       .then((data) => {
@@ -24,7 +26,6 @@ window.onload = function () {
         console.log(data);
       });
   }
-
 
   // check the answer
   function checkAnswer(answer) {
@@ -46,7 +47,7 @@ window.onload = function () {
           Swal.fire("Correct!", "+10 points added : ", "success");
           showScore(10);
         } else {
-          if(count === 5){
+          if (count === 5) {
             fetchData();
           }
           setCount(count + 1);
@@ -59,11 +60,14 @@ window.onload = function () {
     Swal.fire({
       position: "top-end",
       icon: "success",
-      title: ""+userName+" Score is : " + (score+value) + "",
+      title: "" + userName + " Score is : " + (score + value) + "",
       showConfirmButton: false,
       timer: 2000,
     }).then((result) => {
       fetchData();
+      if((score + value) === 100){
+        gift();
+      }
     });
   }
   function hint() {
@@ -83,47 +87,66 @@ window.onload = function () {
       }
     });
   }
-function next(){
-  fetchData();
-}
-function getUserName(){
-  Swal.fire({
-    title: 'Submit your Github username',
-    input: 'text',
-    inputAttributes: {
-      autocapitalize: 'off'
-    },
-    showCancelButton: true,
-    confirmButtonText: 'Look up',
-    showLoaderOnConfirm: true,
-    preConfirm: (login) => {
-      return fetch(`//api.github.com/users/${login}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(response.statusText)
-          }
-          return response.json()
-        })
-        .catch(error => {
-          Swal.showValidationMessage(
-            `Request failed: ${error}`
-          )
-        })
-    },
-    allowOutsideClick: () => !Swal.isLoading()
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire({
-        title: `${result.value.login}'s avatar`,
-        imageUrl: result.value.avatar_url
-      })
-      setUserName(result.value.login)
-    }
-  })
-}
+  function next() {
+    fetchData();
+  }
+  function getUserName() {
+    Swal.fire({
+      title: "Github username to verification",
+      input: "text",
+      inputAttributes: {
+        autocapitalize: "off",
+      },
+      showCancelButton: true,
+      confirmButtonText: "Look up",
+      showLoaderOnConfirm: true,
+      preConfirm: (login) => {
+        return fetch(`//api.facebook.com/users/${login}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(response.statusText);
+            }
+            return response.json();
+          })
+          .catch((error) => {
+            Swal.showValidationMessage(`Request failed: ${error}`);
+          });
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: `${result.value.login}'s Verified`,
+          imageUrl: result.value.avatar_url,
+        });
+        setUserName(result.value.login);
+      }
+    });
+  }
+  function gift(){
+    //get a random dare
+    const randomNum = Math.floor(Math.random() * 11);
+    const randomDare = Dares.dares[randomNum];
+    console.log(randomDare.dare);
+    console.log(randomNum);
+
+    Swal.fire({
+      title: "Gift",
+      text: "" + randomDare.dare + "",
+      icon: "success",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confirm",
+    }).then((result) => {
+      setScore(0);
+      fetchData();
+    });
+      
+      
+  }
   return (
     <div className="container pt-4">
-
       <div className="card text-center">
         <div className="card-header">SMILE GAME</div>
         <div className="card-body">
@@ -226,10 +249,18 @@ function getUserName(){
             </div>
           </div>
           <div className="d-grid gap-2 col-6 mx-auto pt-4">
-            <button className="btn btn-outline-info" type="button" onClick={hint}>
+            <button
+              className="btn btn-outline-info"
+              type="button"
+              onClick={hint}
+            >
               Hint
             </button>
-            <button className="btn btn-outline-danger" type="button" onClick={next}>
+            <button
+              className="btn btn-outline-danger"
+              type="button"
+              onClick={next}
+            >
               Next
             </button>
           </div>
