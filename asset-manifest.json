@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/smile-game-reactJS-frontend/static/css/main.073c9b0a.css",
+    "main.js": "/smile-game-reactJS-frontend/static/js/main.d27cbc8e.js",
+    "index.html": "/smile-game-reactJS-frontend/index.html",
+    "main.073c9b0a.css.map": "/smile-game-reactJS-frontend/static/css/main.073c9b0a.css.map",
+    "main.d27cbc8e.js.map": "/smile-game-reactJS-frontend/static/js/main.d27cbc8e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.d27cbc8e.js"
+  ]
+}
