@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
+import "./style.css";
 // json data
-import Dares from "../../data/fakeDares.json";
 
 export default function Index() {
   //fetch the api and store the question and solution
@@ -12,6 +12,7 @@ export default function Index() {
   const [count, setCount] = useState(0);
   const [userName, setUserName] = useState("Your");
   const [userID, setUserID] = useState(0);
+  const [randomDare, setRandomDare] = useState(null);
 
   //Onload fetch the data
   window.onload = function () {
@@ -19,13 +20,14 @@ export default function Index() {
     //redirect to login
   };
 
-  function fetchData() {
-    fetch("https://marcconrad.com/uob/smile/api.php?out=json")
+   function fetchData() {
+     fetch("https://marcconrad.com/uob/smile/api.php?out=json")
       .then((response) => response.json())
       .then((data) => {
         setQuestion(data.question);
         setSolution(data.solution);
         setLoading(true);
+        console.log(data)
       });
   }
 
@@ -67,7 +69,7 @@ export default function Index() {
       timer: 2000,
     }).then((result) => {
       fetchData();
-      if (score + value === 100) {
+      if (score + value === 20) {
         gift();
       }
     });
@@ -203,24 +205,29 @@ export default function Index() {
   }
 
   function gift() {
-    //get a random dare
     const randomNum = Math.floor(Math.random() * 11);
-    const randomDare = Dares.dares[randomNum];
-    console.log(randomDare.dare);
-    console.log(randomNum);
-
-    Swal.fire({
-      title: "Gift",
-      text: "" + randomDare.dare + "",
-      icon: "success",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Confirm",
-    }).then((result) => {
-      setScore(0);
-      fetchData();
-    });
+    // const randomDare = Dares.dares[randomNum];
+    fetch("http://localhost:3000/api/dares/" + randomNum)
+      .then((response) => response.json())
+      .then((data) => {
+        Swal.fire({
+          title: "Gift",
+          text: "" + data.dare + "",
+          icon: "success",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Confirm",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            continueAlert();
+          }
+          else {
+            continueAlert();
+          }
+        });
+      });
+    
   }
   function logout() {
     Swal.fire({
@@ -240,6 +247,23 @@ export default function Index() {
         setScore(0);
       }
     });
+  }
+  function continueAlert(){
+    Swal.fire({
+      title: 'Do you want to continue?',
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Next Person',
+      denyButtonText: `Logout`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire('Thank you!', '', 'success')
+          setScore(0);
+      } else if (result.isDenied) {
+        Swal.fire('Logout', '', 'info')
+        logout();
+      }
+    })
   }
   return (
     <div className="container pt-4">
