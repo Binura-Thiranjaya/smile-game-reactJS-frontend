@@ -20,14 +20,14 @@ export default function Index() {
     //redirect to login
   };
 
-   function fetchData() {
-     fetch("https://marcconrad.com/uob/smile/api.php?out=json")
+  function fetchData() {
+    fetch("https://marcconrad.com/uob/smile/api.php?out=json")
       .then((response) => response.json())
       .then((data) => {
         setQuestion(data.question);
         setSolution(data.solution);
         setLoading(true);
-        console.log(data)
+        console.log(data);
       });
   }
 
@@ -111,14 +111,16 @@ export default function Index() {
         if (!login || !password) {
           Swal.showValidationMessage(`Please enter login and password`);
         }
-        return fetch(`http://localhost:3000/login/`, {
+        return fetch(`http://localhost:3000/smile_game/users/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            username: Swal.getPopup().querySelector("#login").value,
-            password: Swal.getPopup().querySelector("#password").value,
+            //capitalize the username
+            username: login.toUpperCase(),
+            password: password,
+
           }),
         })
           .then((response) => {
@@ -128,7 +130,7 @@ export default function Index() {
             return response.json();
           })
           .catch((error) => {
-            Swal.showValidationMessage(`Request failed: ${error}`);
+            Swal.showValidationMessage(`Request failed: Please try again`);
           });
       },
     }).then((result) => {
@@ -137,7 +139,7 @@ export default function Index() {
           title: `${result.value.name}'s Verified`,
         });
         setUserName(result.value.name);
-        setUserID(result.value.id);
+        setUserID(result.value._id);
         fetchData();
       } else if (result.isDismissed) {
         signUp();
@@ -148,8 +150,8 @@ export default function Index() {
     Swal.fire({
       title: "Sign up form",
       html: `
-      <input type="text" id="name" class="swal2-input" placeholder="Name" required>
-      <input type="text" id="login" class="swal2-input" placeholder="Username" required>
+      <input type="text" id="username" class="swal2-input" placeholder="Username" required>
+      <input type="text" id="email" class="swal2-input" placeholder="Email" required>
       <input type="password" id="password" class="swal2-input" placeholder="Password" required>
       <input type="password" id="password1" class="swal2-input" placeholder="Confirm Password" required>
             
@@ -162,41 +164,41 @@ export default function Index() {
       focusConfirm: false,
       allowOutsideClick: false,
       preConfirm: () => {
-        const login = Swal.getPopup().querySelector("#login").value;
         const password = Swal.getPopup().querySelector("#password").value;
-        if (!login || !password) {
-          Swal.showValidationMessage(`Please enter login and password`);
-        }
-        //send the data using req body to the server
-        return fetch(`http://localhost:3000/users/`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: Swal.getPopup().querySelector("#name").value,
-            login: Swal.getPopup().querySelector("#login").value,
-            password: Swal.getPopup().querySelector("#password").value,
-            password1: Swal.getPopup().querySelector("#password1").value,
-          }),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(response.statusText);
-            }
-            return response.json();
+        const password1 = Swal.getPopup().querySelector("#password1").value;
+        if (password !== password1) {
+          Swal.showValidationMessage(`Password does not match`);
+        } else {
+          return fetch(`http://localhost:3000/smile_game/users/register`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: Swal.getPopup().querySelector("#username").value,
+              password: Swal.getPopup().querySelector("#password").value,
+              email: Swal.getPopup().querySelector("#email").value,
+            }),
           })
-          .catch((error) => {
-            Swal.showValidationMessage(`Request failed: ${error}`);
-          });
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(response.statusText);
+              }
+              return response.json();
+            })
+            .catch((error) => {
+              Swal.showValidationMessage(`Request failed: Please try again`);
+            });
+        }
       },
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
           title: `${result.value.name}'s Verified`,
         });
+        login();
         setUserName(result.value.name);
-        setUserID(result.value.id);
+        setUserID(result.value._id);
       }
       if (result.isDismissed) {
         login();
@@ -207,7 +209,7 @@ export default function Index() {
   function gift() {
     const randomNum = Math.floor(Math.random() * 11);
     // const randomDare = Dares.dares[randomNum];
-    fetch("http://localhost:3000/api/dares/" + randomNum)
+    fetch("http://localhost:3000/smile_game/dares/" + randomNum)
       .then((response) => response.json())
       .then((data) => {
         Swal.fire({
@@ -221,13 +223,11 @@ export default function Index() {
         }).then((result) => {
           if (result.isConfirmed) {
             continueAlert();
-          }
-          else {
+          } else {
             continueAlert();
           }
         });
       });
-    
   }
   function logout() {
     Swal.fire({
@@ -248,40 +248,39 @@ export default function Index() {
       }
     });
   }
-  function continueAlert(){
+  function continueAlert() {
     Swal.fire({
-      title: 'Do you want to continue?',
+      title: "Do you want to continue?",
       showDenyButton: true,
       showCancelButton: true,
-      confirmButtonText: 'Next Person',
+      confirmButtonText: "Next Person",
       denyButtonText: `Logout`,
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Thank you!', '', 'success')
-          setScore(0);
+        Swal.fire("Thank you!", "", "success");
+        setScore(0);
       } else if (result.isDenied) {
-        Swal.fire('Logout', '', 'info')
+        Swal.fire("Logout", "", "info");
         logout();
       }
-    })
+    });
   }
   return (
-    <div className="container pt-4">
+    <div className="container pt-4" bac>
       <div className="card text-center">
         <div className="card-header">
           <div className="row">
-            <div className="col"><p className="h2">😂-Game</p></div>
-           
+            <div className="col">
+              <p className="h2">😂-Game</p>
+            </div>
+
             <div className="col col-lg-2">
-            <button
-                type="button"
-                className="btn btn-outline-success"
-              >
-                  <i className="fa fa-star ml-2">Score: {score}</i>
+              <button type="button" className="btn btn-outline-success">
+                <i className="fa fa-star ml-2">Score: {score}</i>
               </button>
             </div>
             <div className="col col-lg-1">
-            <button
+              <button
                 type="button"
                 className="btn btn-outline-danger"
                 onClick={logout}
@@ -289,7 +288,6 @@ export default function Index() {
                 Logout
               </button>
             </div>
-
           </div>
         </div>
 
