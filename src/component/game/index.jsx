@@ -9,7 +9,7 @@ export default function Index() {
   const [solution, setSolution] = useState(null);
   const [loading, setLoading] = useState(false);
   const [score, setScore] = useState(0);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
   const [userName, setUserName] = useState("Your");
   const [userID, setUserID] = useState(0);
   const [randomDare, setRandomDare] = useState(null);
@@ -55,7 +55,7 @@ export default function Index() {
             fetchData();
           }
           setCount(count + 1);
-          Swal.fire("Wrong!", "0 points", "error");
+          Swal.fire("Wrong!", "You have Only "+(2-(count)), "error");
         }
       }
     });

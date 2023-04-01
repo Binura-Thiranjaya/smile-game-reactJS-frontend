@@ -27,16 +27,16 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center; */
-  background-color:wheat
+  background-color:#EB455F
 }
 .card-header{
-  background-color:antiquewhite;
+  background-color:#2E3840;
   color: #fff;
   font-size: 18px;
   font-weight: bold;
 }
 .card-footer{
-  background-color: #8fd768;
+  background-color: #F9DBBB;
   color: #fff;
   font-size: 18px;
   font-weight: bold;
