@@ -107,6 +107,7 @@ export default function Index() {
       showLoaderOnConfirm: true,
       focusConfirm: false,
       allowOutsideClick: false,
+      footer: '<a href="instructions" target="_blank">INSTRUCTIONS</a>',
       preConfirm: () => {
         const login = Swal.getPopup().querySelector("#login").value;
         const password = Swal.getPopup().querySelector("#password").value;
@@ -157,13 +158,14 @@ export default function Index() {
       <input type="password" id="password1" class="swal2-input" placeholder="Confirm Password" required>
             
               `,
-      confirmButtonText: "Sign up",
+      confirmButtonText: "Create Account",
       showCancelButton: true,
       cancelButtonText: "Sign in",
       cancelButtonColor: "#D7A1F9",
       showLoaderOnConfirm: true,
       focusConfirm: false,
       allowOutsideClick: false,
+      footer: '<a href="instructions" target="_blank">INSTRUCTIONS</a>',
       preConfirm: () => {
         const password = Swal.getPopup().querySelector("#password").value;
         const password1 = Swal.getPopup().querySelector("#password1").value;
@@ -319,7 +321,7 @@ export default function Index() {
               </div>
             </div>
             <div className="card-footer ">
-              <h4 className="card-title">Guess the Solution?</h4>
+              <h4 className="card-title text-black">Guess the Solution?</h4>
               <div className="row d-flex justify-content-center">
                 <div className="col-2 pt-3">
                   <input

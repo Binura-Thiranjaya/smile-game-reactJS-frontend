@@ -1,11 +1,11 @@
 import React from 'react'
-import Setting from '../../component/setting/'
+import Instructions from '../../component/instructions'
 import Footer from '../../component/footer/'
 
 export default function index() {
   return (
     <div>
-        <Setting />
+        <Instructions />
         <Footer />
     </div>
   )
