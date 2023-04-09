@@ -71,7 +71,7 @@ export default function Index() {
       timer: 2000,
     }).then((result) => {
       fetchData();
-      if (score + value === 20) {
+      if (score + value === 100) {
         gift();
       }
     });
@@ -413,7 +413,7 @@ export default function Index() {
               </div>
               <div className="d-grid gap-2 col-6 mx-auto pt-4">
                 <button
-                  className="btn btn-outline-info"
+                  className="btn btn-outline-success"
                   type="button"
                   onClick={hint}
                 >
