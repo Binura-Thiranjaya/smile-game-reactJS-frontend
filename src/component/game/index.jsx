@@ -19,7 +19,7 @@ export default function Index() {
     login();
     //redirect to login
   };
-  //set a timer to fetchData function 
+  //set a timer to fetchData function
   function fetchData() {
     fetch("https://marcconrad.com/uob/smile/api.php?out=json")
       .then((response) => response.json())
@@ -53,7 +53,7 @@ export default function Index() {
         } else {
           if (count < 5) {
             setCount(count + 1);
-            Swal.fire("Wrong!", "Try Again : "+(5-count), "error");
+            Swal.fire("Wrong!", "Try Again : " + (5 - count), "error");
           } else {
             fetchData();
             setCount(0);
@@ -122,7 +122,6 @@ export default function Index() {
             //capitalize the username
             username: login.toUpperCase(),
             password: password,
-
           }),
         })
           .then((response) => {
@@ -268,7 +267,7 @@ export default function Index() {
     });
   }
   function redirectToPage() {
-    window.location.href = "/setting?ID="+userID;
+    window.location.href = "/setting?ID=" + userID;
   }
   return (
     <div className="container pt-4">
@@ -286,7 +285,11 @@ export default function Index() {
             </div>
             {/* Profile */}
             <div className="col col-lg-2">
-              <button type="button" className="btn btn-outline-primary" onClick={redirectToPage}>
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                onClick={redirectToPage}
+              >
                 <i className="fa fa-user ml-2">Name: {userName}</i>
               </button>
             </div>
@@ -301,130 +304,134 @@ export default function Index() {
             </div>
           </div>
         </div>
+        {loading ? (
+          <div>
+            <div className="card-body">
+              <h5 className="card-title">Question</h5>
 
-        <div className="card-body">
-          <h5 className="card-title">Question</h5>
-          {loading ? (
-            <div>
-              <img src={question} className="img-thumbnail" alt="question" />
-              <div className="card-subtitle text-muted  mt-1 ">
-                <div>
-                  <i className="fa fa-user ml-2">ID: {userID}</i>
+              <div>
+                <img src={question} className="img-thumbnail" alt="question" />
+                <div className="card-subtitle text-muted  mt-1 ">
+                  <div>
+                    <i className="fa fa-user ml-2">ID: {userID}</i>
+                  </div>
                 </div>
               </div>
             </div>
-          ) : (
+            <div className="card-footer ">
+              <h4 className="card-title">Guess the Solution?</h4>
+              <div className="row d-flex justify-content-center">
+                <div className="col-2 pt-3">
+                  <input
+                    type="button"
+                    value="0"
+                    className="btn btn-outline-dark"
+                    onClick={(e) => checkAnswer(e.target.value)}
+                  />
+                </div>
+                <div className="col-2 pt-3">
+                  <input
+                    type="button"
+                    value="1"
+                    className="btn btn-outline-dark"
+                    onClick={(e) => checkAnswer(e.target.value)}
+                  />
+                </div>
+
+                <div className="col-2 pt-3">
+                  <input
+                    type="button"
+                    value="2"
+                    className="btn btn-outline-dark"
+                    onClick={(e) => checkAnswer(e.target.value)}
+                  />
+                </div>
+
+                <div className="col-2 pt-3">
+                  <input
+                    type="button"
+                    value="3"
+                    className="btn btn-outline-dark"
+                    onClick={(e) => checkAnswer(e.target.value)}
+                  />
+                </div>
+
+                <div className="col-2 pt-3">
+                  <input
+                    type="button"
+                    value="4"
+                    className="btn btn-outline-dark"
+                    onClick={(e) => checkAnswer(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="row d-flex justify-content-center">
+                <div className="col-2 pt-3">
+                  <input
+                    type="button"
+                    value="5"
+                    className="btn btn-outline-dark"
+                    onClick={(e) => checkAnswer(e.target.value)}
+                  />
+                </div>
+                <div className="col-2 pt-3">
+                  <input
+                    type="button"
+                    value="6"
+                    className="btn btn-outline-dark"
+                    onClick={(e) => checkAnswer(e.target.value)}
+                  />
+                </div>
+                <div className="col-2 pt-3">
+                  <input
+                    type="button"
+                    value="7"
+                    className="btn btn-outline-dark"
+                    onClick={(e) => checkAnswer(e.target.value)}
+                  />
+                </div>
+
+                <div className="col-2 pt-3">
+                  <input
+                    type="button"
+                    value="8"
+                    className="btn btn-outline-dark"
+                    onClick={(e) => checkAnswer(e.target.value)}
+                  />
+                </div>
+                <div className="col-2 pt-3">
+                  <input
+                    type="button"
+                    value="9"
+                    className="btn btn-outline-dark"
+                    onClick={(e) => checkAnswer(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="d-grid gap-2 col-6 mx-auto pt-4">
+                <button
+                  className="btn btn-outline-info"
+                  type="button"
+                  onClick={hint}
+                >
+                  Hint
+                </button>
+                <button
+                  className="btn btn-outline-danger"
+                  type="button"
+                  onClick={next}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="d-flex justify-content-center pb-3 pt-3">
             <div className="spinner-grow" role="status"></div>
-          )}
-        </div>
-        <div className="card-footer ">
-          <h4 className="card-title">Guess the Solution?</h4>
-          <div className="row d-flex justify-content-center">
-            <div className="col-2 pt-3">
-              <input
-                type="button"
-                value="0"
-                className="btn btn-outline-dark"
-                onClick={(e) => checkAnswer(e.target.value)}
-              />
-            </div>
-            <div className="col-2 pt-3">
-              <input
-                type="button"
-                value="1"
-                className="btn btn-outline-dark"
-                onClick={(e) => checkAnswer(e.target.value)}
-              />
-            </div>
-
-            <div className="col-2 pt-3">
-              <input
-                type="button"
-                value="2"
-                className="btn btn-outline-dark"
-                onClick={(e) => checkAnswer(e.target.value)}
-              />
-            </div>
-
-            <div className="col-2 pt-3">
-              <input
-                type="button"
-                value="3"
-                className="btn btn-outline-dark"
-                onClick={(e) => checkAnswer(e.target.value)}
-              />
-            </div>
-
-            <div className="col-2 pt-3">
-              <input
-                type="button"
-                value="4"
-                className="btn btn-outline-dark"
-                onClick={(e) => checkAnswer(e.target.value)}
-              />
-            </div>
           </div>
-
-          <div className="row d-flex justify-content-center">
-            <div className="col-2 pt-3">
-              <input
-                type="button"
-                value="5"
-                className="btn btn-outline-dark"
-                onClick={(e) => checkAnswer(e.target.value)}
-              />
-            </div>
-            <div className="col-2 pt-3">
-              <input
-                type="button"
-                value="6"
-                className="btn btn-outline-dark"
-                onClick={(e) => checkAnswer(e.target.value)}
-              />
-            </div>
-            <div className="col-2 pt-3">
-              <input
-                type="button"
-                value="7"
-                className="btn btn-outline-dark"
-                onClick={(e) => checkAnswer(e.target.value)}
-              />
-            </div>
-
-            <div className="col-2 pt-3">
-              <input
-                type="button"
-                value="8"
-                className="btn btn-outline-dark"
-                onClick={(e) => checkAnswer(e.target.value)}
-              />
-            </div>
-            <div className="col-2 pt-3">
-              <input
-                type="button"
-                value="9"
-                className="btn btn-outline-dark"
-                onClick={(e) => checkAnswer(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="d-grid gap-2 col-6 mx-auto pt-4">
-            <button
-              className="btn btn-outline-info"
-              type="button"
-              onClick={hint}
-            >
-              Hint
-            </button>
-            <button
-              className="btn btn-outline-danger"
-              type="button"
-              onClick={next}
-            >
-              Next
-            </button>
-          </div>
-        </div>
+        )}
       </div>
       {/* Score Board */}
     </div>
