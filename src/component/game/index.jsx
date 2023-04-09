@@ -19,7 +19,7 @@ export default function Index() {
     login();
     //redirect to login
   };
-
+  //set a timer to fetchData function 
   function fetchData() {
     fetch("https://marcconrad.com/uob/smile/api.php?out=json")
       .then((response) => response.json())
@@ -53,9 +53,11 @@ export default function Index() {
         } else {
           if (count === 2) {
             fetchData();
+            setCount(1);
           }
           setCount(count + 1);
-          Swal.fire("Wrong!", "You have Only "+(2-(count)), "error");
+          //display the remaining attempts in a customize alert and make the number font bigger
+          Swal.fire("Wrong!", "You have only "+count+" attempt!", "error");         
         }
       }
     });
@@ -265,8 +267,11 @@ export default function Index() {
       }
     });
   }
+  function redirectToPage() {
+    window.location.href = "/setting?ID="+userID;
+  }
   return (
-    <div className="container pt-4" bac>
+    <div className="container pt-4">
       <div className="card text-center">
         <div className="card-header">
           <div className="row">
@@ -277,6 +282,12 @@ export default function Index() {
             <div className="col col-lg-2">
               <button type="button" className="btn btn-outline-success">
                 <i className="fa fa-star ml-2">Score: {score}</i>
+              </button>
+            </div>
+            {/* Profile */}
+            <div className="col col-lg-2">
+              <button type="button" className="btn btn-outline-primary" onClick={redirectToPage}>
+                <i className="fa fa-user ml-2">Name: {userName}</i>
               </button>
             </div>
             <div className="col col-lg-1">
