@@ -51,13 +51,13 @@ export default function Index() {
           Swal.fire("Correct!", "+10 points added : ", "success");
           showScore(10);
         } else {
-          if (count === 2) {
+          if (count < 5) {
+            setCount(count + 1);
+            Swal.fire("Wrong!", "Try Again : "+(5-count), "error");
+          } else {
             fetchData();
-            setCount(1);
+            setCount(0);
           }
-          setCount(count + 1);
-          //display the remaining attempts in a customize alert and make the number font bigger
-          Swal.fire("Wrong!", "You have only "+count+" attempt!", "error");         
         }
       }
     });
@@ -290,7 +290,7 @@ export default function Index() {
                 <i className="fa fa-user ml-2">Name: {userName}</i>
               </button>
             </div>
-            <div className="col col-lg-1">
+            <div className="col col-lg-2">
               <button
                 type="button"
                 className="btn btn-outline-danger"
