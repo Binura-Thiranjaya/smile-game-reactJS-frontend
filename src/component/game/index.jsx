@@ -12,14 +12,11 @@ export default function Index() {
   const [count, setCount] = useState(1);
   const [userName, setUserName] = useState("Your");
   const [userID, setUserID] = useState(0);
-  const [randomDare, setRandomDare] = useState(null);
 
   //Onload fetch the data
   window.onload = function () {
     login();
-    //redirect to login
   };
-  //set a timer to fetchData function
   function fetchData() {
     fetch("https://marcconrad.com/uob/smile/api.php?out=json")
       .then((response) => response.json())
@@ -31,11 +28,9 @@ export default function Index() {
       });
   }
 
-  // check the answer
   function checkAnswer(answer) {
     console.log("Answer", answer);
     console.log("Solution", solution);
-
     Swal.fire({
       title: "Are you sure?",
       text: "You have selected : " + answer + "",
@@ -47,10 +42,12 @@ export default function Index() {
     }).then((result) => {
       if (result.isConfirmed) {
         if (answer.toString() === solution.toString()) {
+          play();
           setScore(score + 10);
           Swal.fire("Correct!", "+10 points added : ", "success");
           showScore(10);
         } else {
+          playOnError();
           if (count < 5) {
             setCount(count + 1);
             Swal.fire("Wrong!", "Try Again : " + (5 - count), "error");
@@ -61,6 +58,25 @@ export default function Index() {
         }
       }
     });
+  }
+  function playOnError() {
+    var audio = new Audio(
+      "https://drive.google.com/uc?export=download&id=1bs2zVjX-kDcBxNTkG2w4eK-X67FzI199"
+    );
+    audio.play();
+   
+  }
+  function playOnLoad(){
+    var audio = new Audio(
+      "https://drive.google.com/uc?export=download&id=1RIEy2uDUnA1eHdqGqWZ-R5ZYibuXC4Ly"
+    );
+    audio.play(); 
+  }
+  function play() {
+    var audio = new Audio(
+      "https://drive.google.com/uc?export=download&id=1VgmYGFSHpZJlgeoGTxaXCfwX9KM-_o3j"
+    );
+    audio.play();
   }
   function showScore(value) {
     Swal.fire({
@@ -129,6 +145,7 @@ export default function Index() {
             if (!response.ok) {
               throw new Error(response.statusText);
             }
+            playOnLoad();
             return response.json();
           })
           .catch((error) => {
@@ -171,7 +188,7 @@ export default function Index() {
         const password1 = Swal.getPopup().querySelector("#password1").value;
         if (password !== password1) {
           Swal.showValidationMessage(`Password does not match`);
-        } else {
+        } else {          
           return fetch(`http://localhost:3000/smile_game/users/register`, {
             method: "POST",
             headers: {
